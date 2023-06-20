@@ -56,12 +56,25 @@ function isImageDark(image, threshold, fuzz) {
   return (lightLevel < threshold);
 }
 
+function drawCircle(x, y, radiusX, radiusY, rotation) {
+  canvasCtx1.beginPath();
+  canvasCtx1.strokeStyle  = '#FFFFFF'
+  canvasCtx1.lineWidth  = 10
+  canvasCtx1.ellipse(x, y, radiusX, radiusY, rotation, 0, 2 * Math.PI);
+  canvasCtx1.stroke();
+}
+
 function onResultsFace(results) {
   document.body.classList.add('loaded');
   fpsControl.tick();
   canvasCtx1.save();
   canvasCtx1.clearRect(0, 0, out1.width, out1.height);
   canvasCtx1.drawImage(results.image, 0, 0, out1.width, out1.height);
+
+  let deg = 90;
+  let rad = deg * (Math.PI / 180.0);
+
+  drawCircle(100, 100, 80, 90, rad);
 
   canvasCtx1.font = "25px Arial";
   let text = null;
@@ -101,10 +114,13 @@ function onResultsFace(results) {
     drawRectangle(
         canvasCtx1, results.detections[0].boundingBox,
         {color: 'blue', lineWidth: 4, fillColor: '#00000000'});
+
     drawLandmarks(canvasCtx1, results.detections[0].landmarks, {
       color: 'red',
       radius: 5,
     });
+
+
   }
 
   canvasCtx1.restore();
